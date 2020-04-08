@@ -8,12 +8,12 @@ const fn2 = () => new Promise(resolve => {
     setTimeout(() => resolve(2), 1000);
 });
 
-function promiseReduce(asyncFunctions, reduce, initialValue) {
+async function promiseReduce(asyncFunctions, reduce, initialValue) {
     let memo = initialValue;
 
-    asyncFunctions.forEach(function(item) {
-        item().then(result => { memo = reduce(memo, result) })
-    });
+    for (const f of asyncFunctions) {
+        await f().then(function(result) {memo = reduce(memo, result)});
+    }
 
     return Promise.resolve(memo);
 }
@@ -22,4 +22,4 @@ promiseReduce(
     [fn1, fn2],
     function (memo, value) { console.log('reduce'); return memo * value; },
     1)
-    .then(result => console.log(result));
+    .then(console.log);
