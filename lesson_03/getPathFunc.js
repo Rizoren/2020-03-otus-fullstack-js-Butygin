@@ -7,16 +7,16 @@ function getPath(el)
         let step = (function () {
             if (Node.ELEMENT_NODE !== contextEl.nodeType) return null;
 
-            let id = contextEl.getAttribute("id");
+            let id = contextEl.getAttribute('id');
             let nodeName = contextEl.nodeName.toLowerCase();
 
-            if (id) return nodeName.toLowerCase() + "#" + id;
+            if (id) return `${nodeName.toLowerCase()}#${id}`;
 
             if (!contextEl.parentNode || Node.DOCUMENT_NODE === contextEl.parentNode.nodeType)
                 return nodeName.toLowerCase();
 
-            let prefixedOwnClassNamesArray = (contextEl.getAttribute("class") == null) ? [] :
-                contextEl.getAttribute("class").split(/\s+/g).filter(Boolean).map(name => "$" + name);
+            let prefixedOwnClassNamesArray = (contextEl.getAttribute('class') == null) ? [] :
+                contextEl.getAttribute('class').split(/\s+/g).filter(Boolean).map(name => `$${name}`);
 
             let needsClassNames = false;
             let needsNthChild = false;
@@ -40,8 +40,8 @@ function getPath(el)
                     needsNthChild = true;
                     continue;
                 }
-                let siblingClassNamesArray = (sibling.getAttribute("class") == null) ? [] :
-                    sibling.getAttribute("class").split(/\s+/g).filter(Boolean).map(name => "$" + name);
+                let siblingClassNamesArray = (sibling.getAttribute('class') == null) ? [] :
+                    sibling.getAttribute('class').split(/\s+/g).filter(Boolean).map(name => `$${name}`);
                 for (let j = 0; j < siblingClassNamesArray.length; ++j) {
                     let siblingClass = siblingClassNamesArray[j];
                     if (ownClassNames.indexOf(siblingClass)) continue;
@@ -54,16 +54,16 @@ function getPath(el)
             }
 
             let result = nodeName.toLowerCase();
-            if (contextEl === el && nodeName.toLowerCase() === "input"
-                && contextEl.getAttribute("type")
-                && !contextEl.getAttribute("id")
-                && !contextEl.getAttribute("class"))
-                result += "[type=\"" + contextEl.getAttribute("type") + "\"]";
+            if (contextEl === el && nodeName.toLowerCase() === 'input'
+                && contextEl.getAttribute('type')
+                && !contextEl.getAttribute('id')
+                && !contextEl.getAttribute('class'))
+                result += `[type="${contextEl.getAttribute('type')}"]`;
             if (needsNthChild) {
-                result += ":nth-child(" + (ownIndex + 1) + ")";
+                result += `:nth-child(${(ownIndex + 1)})`;
             } else if (needsClassNames) {
                 for (let prefixedName in prefixedOwnClassNamesArray)
-                    result += "." + prefixedOwnClassNamesArray[prefixedName].substr(1);
+                    result += `.${prefixedOwnClassNamesArray[prefixedName].substr(1)}`;
             }
 
             return result;
@@ -72,5 +72,5 @@ function getPath(el)
         if (!step) break;
         steps.push(step);
     }
-    return steps.reverse().join(">");
+    return steps.reverse().join('>');
 }
