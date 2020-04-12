@@ -1,6 +1,6 @@
 function getPath(el)
 {
-    if (el.nodeType !== Node.ELEMENT_NODE) return "";
+    if (el.nodeType !== Node.ELEMENT_NODE) return '';
 
     let steps = [];
     for(let contextEl = el; contextEl; contextEl = contextEl.parentNode) {
