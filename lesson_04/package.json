@@ -1,0 +1,15 @@
+{
+  "name": "lesson_04",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "send_p": "node requests.js 5 p",
+    "send_c": "node requests.js 5 c"
+  },
+  "keywords": [],
+  "author": "Vladimir Butygin",
+  "license": "ISC"
+}
