@@ -1,1 +1,8 @@
+<<<<<<< HEAD
 /.idea/
+=======
+node_modules
+dist
+.cache
+.vs
+>>>>>>> origin/master
