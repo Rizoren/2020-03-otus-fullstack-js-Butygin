@@ -1,0 +1,222 @@
+type Query {
+    user(id: ID!): User
+    userList: [User]
+    product(id: ID!): Product
+    productList: [Product]
+    promo(id: ID!): Promo
+    promoList: [Promo]
+    cart(login: String!): Cart
+}
+
+interface Node {
+    id: ID!
+}
+
+type _QueryMeta {
+    count: Int!
+}
+
+scalar DateTime
+
+enum Role { ADMIN SELLER BUYER UNKNOWD }
+
+input CreateUser {
+    login: String!
+    password: String!
+    role: Role
+}
+
+input UpdateUser {
+    id: ID!
+    login: String
+    password: String
+    role: Role
+}
+
+type User {
+    id: ID!
+    login: String
+    email: String
+    role: Role
+}
+
+input CreateProduct {
+    name: String!
+    description: String
+    price: Float!
+    voluem: Int!
+    measure: String!
+}
+
+input UpdateProduct {
+    id: ID!
+    name: String
+    description: String
+    price: Float
+    voluem: Int
+    measure: String
+}
+
+type Product implements Node {
+    id: ID!
+    name: String
+    description: String
+    price: Float
+    voluem: Int
+    measure: String
+}
+
+input ProductInput {
+    id: ID!
+    name: String
+    description: String
+    price: Float
+    voluem: Int
+    measure: String
+}
+
+input CreatePromo {
+    name: String!
+    description: String
+    priceModify: Float!
+    endDate: DateTime!
+    products: [ProductInput!]
+    productIDs: [ID!]
+}
+
+input UpdatePromo {
+    id: ID!
+    name: String
+    description: String
+    priceModify: Float
+    endDate: DateTime
+}
+
+type Promo implements Node {
+    id: ID!
+    name: String
+    description: String
+    priceModify: Float
+    endDate: DateTime
+    products: [Product]
+    productIDs: [ID!]
+    _productsMeta: _QueryMeta!
+}
+
+type AddToPromoProduct {
+    promo: Promo
+    product: Product
+}
+
+type RemoveFromPromoProduct {
+    promo: Promo
+    product: Product
+}
+
+input CreateCart {
+    login: String!
+    products: [ProductInput!]
+    productIDs: [ID!]
+}
+
+type Cart {
+    user: User
+    products: [Product]
+    productIDs: [ID!]
+    _productsMeta: _QueryMeta!
+}
+
+type AddToCartProduct {
+    cart: Cart
+    product: Product
+}
+
+type RemoveFromCartProduct {
+    cart: Cart
+    product: Product
+}
+
+type Mutation {
+
+    createUser (
+        login: String!
+        password: String!
+        role: Role
+    ): User
+    updateUser (
+        id: ID!
+        password: String
+        role: Role
+    ): User
+    updateOrCreateUser(create: CreateUser!, update: UpdateUser!): User
+    deleteUser(id: ID!): User
+
+    createProduct (
+        name: String!
+        description: String
+        price: Float!
+        voluem: Int!
+        measure: String!
+    ): Product
+    updateProduct (
+        id: ID!
+        name: String
+        description: String
+        price: Float
+        voluem: Int
+        measure: String
+    ): Product
+    updateOrCreateProduct(create: CreateProduct!, update: UpdateProduct!): Product
+    deleteProduct(id: ID!): Product
+
+    createPromo (
+        name: String!
+        description: String
+        priceModify: Float!
+        endDate: DateTime!
+    ): Promo
+    updatePromo (
+        id: ID!
+        name: String
+        description: String
+        priceModify: Float
+        endDate: DateTime
+    ): Promo
+    updateOrCreatePromo(create: CreatePromo!, update: UpdatePromo!): Promo
+    deletePromo(id: ID!): Promo
+
+    createCart(login: String, products: [ProductInput]): Cart
+    deleteCart(login: String): Cart
+
+    addToPromoProduct(
+        promoID: ID!
+        productID: ID!
+    ): AddToPromoProduct
+    removeFromPromoProduct(
+        promoID: ID!
+        productID: ID!
+    ): RemoveFromPromoProduct
+
+    addToCartProduct(
+        login: String!
+        productID: ID!
+    ): AddToCartProduct
+    removeFromCartProduct(
+        login: String!
+        productID: ID!
+    ): RemoveFromCartProduct
+}
+
+type FavoritsList {
+    user: User
+    products: [Product]
+    productIDs: [Product]
+    _productsMeta: _QueryMeta!
+}
+
+type CompareList {
+    user: User
+    products: [Product]
+    productIDs: [Product]
+    _productsMeta: _QueryMeta!
+}
