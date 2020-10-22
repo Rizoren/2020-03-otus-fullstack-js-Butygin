@@ -64,14 +64,14 @@ export default new Vuex.Store({
     getExamplesSelf: (state) => {
       if (state.examples) {
         return state.examples.filter((ex) => ex.level <= state.settings.level
-          && ex.operators.reduce((a: boolean, v: any) => a
+          && ex.operators.reduce((a: boolean, v: string) => a
             && state.settings.operations.includes(v), true));
       }
       return [];
     },
   },
   actions: {
-    setSettings({ commit, state }, newSettings) {
+    setSettings({ commit }, newSettings) {
       commit('setSettings', newSettings);
     },
   },
